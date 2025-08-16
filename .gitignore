@@ -118,4 +118,9 @@ COMMIT_SUMMARY.md
 *.tmp
 *.temp
 *.pyc.*
-*.pyo.*
+*.pyo.*.env.backup
+*.env
+.env.backup
+*.env
+.env.backup
+*.env

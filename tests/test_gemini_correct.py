@@ -13,7 +13,7 @@ project_root = Path(__file__).parent
 sys.path.insert(0, str(project_root))
 
 # 加载环境变量
-load_dotenv(project_root / ".env", override=True)
+load_dotenv()
 
 # 推荐的模型列表（按优先级排序）
 RECOMMENDED_MODELS = [

@@ -279,7 +279,7 @@ class FinancialSituationMemory:
             self.embedding = "nomic-embed-text"
             self.client = OpenAI(base_url=config["backend_url"])
         else:
-            self.embedding = "text-embedding-3-small"
+            self.embedding = "text-embedding-3-large"
             openai_key = os.getenv('OPENAI_API_KEY')
             if openai_key:
                 self.client = OpenAI(

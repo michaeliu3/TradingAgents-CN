@@ -1047,7 +1047,7 @@ def get_fundamentals_openai(ticker, curr_date):
                     "content": [
                         {
                             "type": "input_text",
-                            "text": f"Can you search Fundamental for discussions on {ticker} during of the month before {curr_date} to the month of {curr_date}. Make sure you only get the data posted during that period. List as a table, with PE/PS/Cash flow/ etc",
+                            "text": f"Can you search stock fundamentals for discussions on {ticker} from the year before {curr_date} to the month of {curr_date}, inclusive. Make sure you only get the data posted during that period. List as a table, with PE/PS/Cash flow/ etc (list as many items as you can).",
                         }
                     ],
                 }

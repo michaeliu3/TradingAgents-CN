@@ -207,19 +207,22 @@ def render_sidebar():
         st.markdown("### 🧠 AI模型配置")
 
         # LLM提供商选择
+        provider_options = ["dashscope", "deepseek", "google", "openai", "anthropic", "openrouter", "custom_openai"]
+        provider_formats = {
+            "dashscope": "🇨🇳 阿里百炼",
+            "deepseek": "🚀 DeepSeek V3",
+            "google": "🌟 Google AI",
+            "openai": "🤖 OpenAI",
+            "anthropic": "🧠 Anthropic", # ADDED
+            "openrouter": "🌐 OpenRouter",
+            "custom_openai": "🔧 自定义OpenAI端点"
+        }
+        
         llm_provider = st.selectbox(
             "LLM提供商",
-            options=["dashscope", "deepseek", "google", "openai", "openrouter", "custom_openai"],
-            index=["dashscope", "deepseek", "google", "openai", "openrouter", "custom_openai"].index(st.session_state.llm_provider) if st.session_state.llm_provider in ["dashscope", "deepseek", "google", "openai", "openrouter", "custom_openai"] else 0,
-            format_func=lambda x: {
-                "dashscope": "🇨🇳 阿里百炼",
-                "deepseek": "🚀 DeepSeek V3",
-                "google": "🌟 Google AI",
-                "openai": "🤖 OpenAI",
-                "openrouter": "🌐 OpenRouter",
-                "custom_openai": "🔧 自定义OpenAI端点"
-            }[x],
-            help="选择AI模型提供商",
+            options=provider_options,
+            index=provider_options.index(st.session_state.llm_provider) if st.session_state.llm_provider in provider_options else 0,
+            format_func=lambda x: provider_formats.get(x, x),
             key="llm_provider_select"
         )
 
@@ -342,6 +345,7 @@ def render_sidebar():
             save_model_selection(st.session_state.llm_provider, st.session_state.model_category, llm_model)
         elif llm_provider == "openai":
              openai_options = [
+                 "gpt-5",
                  "gpt-4o",
                  "gpt-4o-mini",
                  "gpt-4-turbo",
@@ -359,6 +363,7 @@ def render_sidebar():
                  options=openai_options,
                  index=current_index,
                  format_func=lambda x: {
+                     "gpt-5": "GPT-5 - 🚀 最新发布旗舰",
                      "gpt-4o": "GPT-4o - 最新旗舰模型",
                      "gpt-4o-mini": "GPT-4o Mini - 轻量旗舰",
                      "gpt-4-turbo": "GPT-4 Turbo - 强化版",
@@ -400,6 +405,39 @@ def render_sidebar():
 
              # OpenAI特殊提示
              st.info("💡 **OpenAI配置**: 在.env文件中设置OPENAI_API_KEY")
+        
+        elif llm_provider == "anthropic":
+            anthropic_options = [
+                "claude-opus-4-1-20250805",
+                "claude-3-5-sonnet-20241022",
+                "claude-3-opus-20240229",
+                "claude-3-sonnet-20240229",
+                "claude-3-haiku-20240307"
+            ]
+            current_index = 0
+            if st.session_state.llm_model in anthropic_options:
+                current_index = anthropic_options.index(st.session_state.llm_model)
+
+            llm_model = st.selectbox(
+                "选择Anthropic模型",
+                options=anthropic_options,
+                index=current_index,
+                format_func=lambda x: {
+                    "claude-opus-4-1-20250805": "🚀 Claude Opus 4.1 - 最新旗舰",
+                    "claude-3-5-sonnet-20241022": "Claude Sonnet 3.5 v2 - 平衡旗舰",
+                    "claude-3-opus-20240229": "Claude 3 Opus - 经典强大",
+                    "claude-3-sonnet-20240229": "Claude 3 Sonnet - 经典平衡",
+                    "claude-3-haiku-20240307": "Claude 3 Haiku - 经典快速"
+                }[x],
+                help="选择用于分析的Anthropic Claude模型",
+                key="anthropic_model_select"
+            )
+            # Update and save the selection
+            if st.session_state.llm_model != llm_model:
+                st.session_state.llm_model = llm_model
+            save_model_selection(st.session_state.llm_provider, st.session_state.model_category, llm_model)
+            st.info("💡 **Anthropic配置**: 在.env文件中设置ANTHROPIC_API_KEY")
+        
         elif llm_provider == "custom_openai":
             st.markdown("### 🔧 自定义OpenAI端点配置")
             
